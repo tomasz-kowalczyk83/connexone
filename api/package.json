@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test:unit": "jest",
     "start": "node ./bin/www"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "eslint-config-standard": "^16.0.3",
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^5.2.0"
+    "eslint-plugin-promise": "^5.2.0",
+    "jest": "^27.5.1"
   }
 }
