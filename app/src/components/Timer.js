@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const Timer = (props) => {
+const Timer = () => {
     const [serverTime, setServerTime] = React.useState(0)
     const [clientTime, setClientTime] = React.useState(Date.now())
     const [difference, setDifference] = React.useState(0)
+    const [loading, setLoading] = React.useState(0)
     let [tick, setTick] = React.useState(0)
     
 
@@ -14,10 +15,9 @@ const Timer = (props) => {
         }, 1000);
     }, [])
 
-    useEffect(() => {
-        console.log('update from tick', tick)
-        
+    useEffect(() => {      
         if(!(tick % 30)) {
+            setLoading(1)
             axios.get(process.env.REACT_APP_API_URL + '/time', {
                 headers: {
                     authorization: 'mysecrettoken'
@@ -25,6 +25,7 @@ const Timer = (props) => {
             })
             .then(resp => {
                 setServerTime(resp.data.epoch * 1000)
+                setLoading(0)
             })
         } 
         setClientTime(Date.now())
@@ -49,7 +50,9 @@ const Timer = (props) => {
     }
 
     return (
-        <div>
+        <div
+            className={`timer ${loading ? 'loading' : ''}`}
+        >
             <p>last server time: {formatTime(serverTime)}</p>
             <p>client time: {formatTime(clientTime)}</p>
             <p>difference: {formatDiff(difference)}</p>
