@@ -18,19 +18,18 @@ const Timer = (props) => {
         console.log('update from tick', tick)
         
         if(!(tick % 30)) {
-            console.log('should update server time')
             axios.get(process.env.REACT_APP_API_URL + '/time', {
                 headers: {
                     authorization: 'mysecrettoken'
                 }
             })
             .then(resp => {
-                console.log('setting server time', resp.data.epoch)
                 setServerTime(resp.data.epoch * 1000)
             })
-        }
+        } 
         setClientTime(Date.now())
         setDifference(clientTime - serverTime)
+        
     }, [tick])
 
     const formatTime = (timestamp) => {
@@ -40,9 +39,11 @@ const Timer = (props) => {
     }
 
     const formatDiff = (diff) => {
-        const hh = Math.floor(diff / 1000 / 60 / 60).toString().padStart(2, '0');
-        const mm = Math.floor(diff / 1000 / 60).toString().padStart(2, '0');
-        const ss = Math.floor(diff / 1000).toString().padStart(2, '0');
+        //
+        const cap = Math.max(0, diff)
+        const hh = Math.floor(cap / 1000 / 60 / 60).toString().padStart(2, '0');
+        const mm = Math.floor(cap / 1000 / 60).toString().padStart(2, '0');
+        const ss = Math.floor(cap / 1000).toString().padStart(2, '0');
 
         return `${hh}:${mm}:${ss}`
     }
