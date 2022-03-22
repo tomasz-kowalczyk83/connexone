@@ -7,11 +7,13 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const prometheus = require('express-prometheus-middleware')
 const authMiddleware = require('./middleware/auth')
+var cors = require('cors')
 
 const indexRouter = require('./routes/index');
 
 const app = express();
 
+app.use(cors())
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
