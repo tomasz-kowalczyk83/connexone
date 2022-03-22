@@ -9,8 +9,7 @@ describe('testing server routes', () => {
     test('GET /time - success', async () => {
         const response = await request(app).get("/time")
 
-        expect(response.body).toEqual({
-            epoch: 1
-        })
+        expect(response.body).toHaveProperty('epoch')
+        expect(response.body.epoch).toEqual(expect.any(Number))
     });
 });
