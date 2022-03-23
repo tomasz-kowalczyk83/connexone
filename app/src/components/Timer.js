@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 
 const Timer = () => {
-    const [serverTime, setServerTime] = React.useState(0)
+    const [serverTime, setServerTime] = React.useState(null)
     const [clientTime, setClientTime] = React.useState(Date.now())
     const [difference, setDifference] = React.useState(0)
     const [loading, setLoading] = React.useState(0)
@@ -25,18 +25,19 @@ const Timer = () => {
             })
             .then(resp => {
                 setServerTime(resp.data.epoch * 1000)
+            })
+            .finally(() => {
                 setLoading(0)
             })
         } 
         setClientTime(Date.now())
-        setDifference(clientTime - serverTime)
+        if(serverTime)
+            setDifference(clientTime - serverTime)
         
     }, [tick])
 
     const formatTime = (timestamp) => {
-        const date = new Date(timestamp)
-
-        return date.toLocaleTimeString()
+        return timestamp ? new Date(timestamp).toLocaleTimeString() : ''
     }
 
     const formatDiff = (diff) => {
